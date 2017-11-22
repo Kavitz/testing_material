@@ -1,0 +1,6 @@
+{
+  "month" : ["Tammikuu", "Helmikuu", "Maaliskuu", "Huhtikuu", "Toukokuu", "Kesäkuu", "Heinäkuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu"],
+  "week" : ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"],
+  "now":"Nyt",
+  "done":"Tehty"
+}

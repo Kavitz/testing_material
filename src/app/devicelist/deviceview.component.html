@@ -1,0 +1,206 @@
+<div class="device-infolabls">
+    
+    
+        <form role="form">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Model Name <sup>*</sup></label>
+                    <input type="text" class="form-control" placeholder="Nokia 6s" value="Nokia 6s">
+                </div>
+                <div class="col-sm-4">
+                    <label>Model Number <sup>*</sup></label>
+                    <input type="text" class="form-control" placeholder="Nokia 6s" value="Nokia 6s">
+                </div>
+                <div class="col-sm-4">
+                    <label>Manufacturer name <sup>*</sup></label>
+                    <input type="text" class="form-control" placeholder="Nokia" value="Nokia">
+                </div>
+            </div>
+
+            <div class="row">
+                    <div class="col-sm-4">
+                        <label>Category <sup>*</sup></label>
+                        <input type="text" class="form-control" placeholder="Mobile" value="Mobile">
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Sub Category</label>
+                        <input type="text" class="form-control" placeholder="Smart Phone" value="Smart Phone">
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Last Updated</label>
+                        <input type="text" class="form-control" placeholder="Last Updated" disabled value="24-11-2018 12:34 PM">
+                    </div>
+                </div>
+    
+    
+            <div class="collap-hd">
+                <p class="clearfix" (click)="showHide3 = !showHide3"><span class="pull-left">Wi-Fi Capability</span> <span class="pull-right">- Collapse</span></p>
+            </div>
+            <div class="collap-cont" [hidden]="showHide3">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Wi-Fi Standard Supported</label>
+                    <mat-form-field>
+                        <mat-select placeholder="Favorite food">
+                            <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{ food.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <label>Minimum Required Band</label>
+                    <input type="text" class="form-control" placeholder="Enter the value">
+                </div>
+                <div class="col-sm-4">
+                    <label>Frequency Band <sup>*</sup></label>
+                    <mat-form-field>
+                        <mat-select placeholder="Favorite food">
+                            <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{ food.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Max Channel Supported</label>
+                    <mat-form-field>
+                        <mat-select placeholder="Favorite food">
+                            <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{ food.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <label>Streams Supported</label>
+                    <mat-form-field>
+                        <mat-select placeholder="Favorite food">
+                            <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{ food.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+                <div class="col-sm-4">
+                    <label>Beam Forming</label>
+                    <input type="text" class="form-control" placeholder="Enter the value">
+                </div>
+            </div>            
+        </div>
+        <div class="sepcollap-space">
+            <mat-checkbox>Wi-Fi Direct Supported</mat-checkbox>
+                <!-- <div class="checkbox">
+                    <input id="wifis0" type="checkbox">
+                    <label for="wifis0" class="fontn graylc"> Wi-Fi Direct Supported</label>
+                </div> -->
+            </div>
+
+            <div class="collap-hd">
+                <p class="clearfix" (click)="showHide = !showHide"><span class="pull-left">Display</span> <span class="pull-right">- Collapse</span></p>
+              </div>
+              <div class="collap-cont" [hidden]="showHide">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Resolution</label>
+                    <mat-form-field>
+                        <mat-select placeholder="Favorite food">
+                            <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{ food.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>                
+
+                <div class="col-sm-4">
+                    <label>Display Device <sup>*</sup></label>
+                    <mat-form-field>
+                        <mat-select placeholder="Favorite food">
+                            <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{ food.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>                
+                            
+            </div>
+        </div>
+
+            <div class="collap-hd">
+                    <p class="clearfix" (click)="showHide1 = !showHide1"><span class="pull-left">Security</span> <span class="pull-right">- Collapse</span></p>
+                </div>
+                <div class="collap-cont" [hidden]="showHide1">                
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-select placeholder="Favorite food">
+                                <mat-option *ngFor="let food of foods" [value]="food.value">
+                                {{ food.viewValue }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+    
+                    </div> 
+                            
+                    <div class="col-sm-4">
+                        <mat-checkbox>Wi-Fi Direct Supported</mat-checkbox>
+                        <!-- <div class="checkbox">
+                            <input id="chcks1" type="checkbox">
+                            <label for="chcks1" class="fontn graylc"> WPS Push Button</label>
+                        </div> -->
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-checkbox>Wi-Fi Direct Supported</mat-checkbox>                      
+                        <!-- <div class="checkbox">
+                            <input id="chcks2" type="checkbox">
+                            <label for="chcks2" class="fontn graylc"> WPA Personal</label>
+                        </div> -->
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-checkbox>Wi-Fi Direct Supported</mat-checkbox>                      
+                        <!-- <div class="checkbox">
+                            <input id="chcks3" type="checkbox">
+                            <label for="chcks3" class="fontn graylc"> WPA Enterprise</label>
+                        </div> -->
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-checkbox>Wi-Fi Direct Supported</mat-checkbox>                      
+                        <!-- <div class="checkbox">
+                            <input id="chcks4" type="checkbox">
+                            <label for="chcks4" class="fontn graylc"> WPA2</label>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+                <div class="collap-hd">
+                    <p class="clearfix" (click)="showHide2 = !showHide2"><span class="pull-left">Other</span> <span class="pull-right">- Collapse</span></p>
+                </div>
+                <div class="collap-cont" [hidden]="showHide2">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-checkbox>Wi-Fi Direct Supported</mat-checkbox>                      
+                        <!-- <div class="checkbox">
+                            <input id="chcks5" type="checkbox">
+                            <label for="chcks5" class="fontn graylc"> Battery Powerd</label>
+                        </div> -->
+                    </div>
+
+                    <div class="col-sm-4">
+                            <label>Operating System</label>
+                            <input type="text" class="form-control" placeholder="Android" value="Android">
+                        </div>
+        
+                </div>
+                </div>
+                
+        </form>
+      </div>

@@ -1,0 +1,6 @@
+{
+  "month" : ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"],
+  "week" : ["Ni", "Po", "Wt", "Śr", "Cz", "Pi", "So"],
+  "now":"Teraz",
+  "done":"Gotowe"
+}

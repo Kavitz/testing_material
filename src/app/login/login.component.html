@@ -1,0 +1,61 @@
+<hdd-banner [title]="'Wi-Fi Device Database'"></hdd-banner>
+
+<section class="login-bg">
+    <div class="login-container">
+        <h2 class="nomar text-right"><img src="assets/wulfdist/img/logo.png"></h2>
+        <h4 class="login-prod-name text-primary">Nokia Wi-Fi Device Database</h4>
+        <p class="login-version">Version 1.0</p>
+
+        <div class="logn-msg-blk text-center">
+          <!-- <p *ngIf="applicationLoginUsername.errors && (applicationLoginUsername.dirty || applicationLoginUsername.touched)" class="login-error nomar">
+            <span [hidden]="!applicationLoginUsername.errors.required">User name required!
+            </span>
+          </p> -->
+          <p *ngIf="showValidLogin" class="login-error nomar">Incorrect login information, please try again</p>
+            <!-- <p *ngIf="applicationLoginPassword.errors && (applicationLoginPassword.dirty || applicationLoginPassword.touched)" class="login-error nomar">
+            <span [hidden]="!applicationLoginPassword.errors.required">Password required!
+            </span>
+          </p> -->
+        </div>
+
+        <form role="form form-horizontal" action="" #loginForm="ngForm">
+          <div class="form-group has-feedback">
+            <div class="input-required">
+                <input name="applicationLoginUsername" type="text" class="form-control n-inputfield" id="applicationLoginUsername" placeholder="User name" required [(ngModel)]="hddusername" #applicationLoginUsername="ngModel">
+            </div>
+          </div>
+
+          <div class="form-group has-feedback nomar">
+            <div class="input-required">
+              <input name="applicationLoginPassword" type="password" class="form-control n-inputfield" id="applicationLoginPassword" placeholder="Password" required [(ngModel)]="hddpassword" #applicationLoginPassword="ngModel">
+            </div>
+          </div>
+
+          <div class="n-login-action">
+            <div class="form-group clearfix login-lnks">
+                <mat-checkbox>Remember User name</mat-checkbox>
+              <!-- <div class="checkbox pull-left nomar">
+                  <input id="rememberUsername" type="checkbox">
+                  <label for="rememberUsername" class="fontn graylc"> Remember User name</label>
+              </div> -->
+              <div class="n-login-forget-password pull-right">
+                  <a id='TA_login_forgetpassword' href="javascript:void(0);" class="text-primary fontn">Forgot password</a>
+                  <span class="icon icon-chevron-right"></span>
+              </div>
+            </div>
+
+            <!-- <p><button class="btn-block btn primary-btn" id="applicationLoginButton" routerLink="/dashboard" [disabled]="!loginForm.form.valid">LOG IN</button></p> -->
+            <p><button class="btn-block btn primary-btn" id="applicationLoginButton" (click)="checkUser()" mat-button>LOG IN</button></p>
+          </div>
+
+        </form>
+    </div>
+    <!-- <p class="lang-footer">Language: English <span class="icon icon-arrow"></span></p> -->
+    <p class="text-center footer-copy">Copyright &copy; 2017 Nokia.</p>
+    
+</section>
+
+
+
+
+

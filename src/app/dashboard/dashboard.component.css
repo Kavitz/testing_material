@@ -1,0 +1,174 @@
+ body {
+    background: #fff;
+  }
+  
+ .table-container {
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.12), 0px 9px 9px 0px rgba(0,0,0,0.24);
+    -webkit-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.12), 0px 9px 9px 0px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.12), 0px 9px 9px 0px rgba(0,0,0,0.24);
+    -o-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.12), 0px 9px 9px 0px rgba(0,0,0,0.24);
+    -ms-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.12), 0px 9px 9px 0px rgba(0,0,0,0.24);
+    max-width: 880px;
+    margin: 30px auto;
+    background: #f7f7f7;
+ }
+ .table-container .table, .table-container .table * {
+    border:none;
+    border-radius: 0;
+}
+.table-container .table thead {
+    background:#f9f9f9;
+}
+.table-container .table tbody {
+    background: #fff;
+}
+.table-container .table td {
+    font-size: 14px;
+    padding: 12px 8px;
+}
+.table-container .table > thead > tr > th {
+    font-size: 12px;
+    font-weight: bold !important;
+}
+.table>thead>tr>th {
+    padding: 15px 10px 15px 10px;
+}
+.table {
+    margin: 0;
+}
+ .table-container .btn, .main-primary, .main-primary:hover {
+    height: 36px;
+    border-radius: 0px;
+    background: #124191;
+    color: #fff;
+    border-color: #124191;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    -ms-box-shadow: none;
+    text-shadow: none;
+    min-width:80px;
+ }
+ .btn-reject, .btn-reject:hover {
+    background: #f44336;
+    border-color: #f44336;
+ }
+ .btn-approve, .btn-approve:hover {
+    background: #8ec741;
+    border-color: #8ec741;
+ }
+ .table-ftr-btns {
+     padding:5px 15px 5px 5px;
+     border-top: 1px solid #f1f1f1;
+ }
+.search-filter {
+    max-width: 600px;
+    margin: 20px auto 60px auto;
+    position: relative;
+}
+.search-filter .icon-search {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.search-filter .icon-search:before {
+    content: "\e617";
+    color: #999696 !important;
+}
+.search-filter .form-control {
+    border: none;
+    border-bottom-width: medium;
+    border-bottom-style: none;
+    border-bottom-color: currentcolor;
+    border-bottom: 2px solid #00c9ff;
+    border-radius: 0;
+    padding: 10px 0px 10px 30px;
+    height: 50px; 
+    background: transparent;
+    box-shadow: none;
+    font-size: 16px;   
+}
+.reload-icon {
+    padding: 10px 30px 0px 30px;
+}
+.reload-icon img {
+    width: 40px;
+    opacity: 0.5;
+}
+
+.actn-arw-rgt {
+    width: 0 !important;
+    height: 0 !important;
+    border-top: 4px solid transparent !important;
+    border-bottom: 4px solid transparent !important;
+    border-left: 6px solid #d0021b !important;
+    display: inline-block;
+    margin-left: 10px;
+}
+.table .icon-edited:before {
+    color: #333;
+}
+
+/* Charts Style */
+.charts-lists {
+    margin: 80px 0px 60px 0px;
+}
+.barmanfac-txt {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 50%;
+    left: -50px;
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+}
+.chart-devices > li:before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 7px;
+}
+.chart-devices > li {
+    padding-left: 10px;
+    max-width: 180px;
+    width:100%;
+    text-align: center; 
+    color: #999;
+}
+.charts-lists .show, .device-barchart .show {
+    color: #999;
+}
+.chart-devices > li.bdark:before {
+    background: #124291;
+}
+.chart-devices > li.blight:before {
+    background: #05a18f;
+}
+.chart-devices > li.yellow:before {
+    background: #ffe093;
+}
+.chart-devices > li.red:before {
+    background: #d2302f;
+}
+.device-barchart {
+    max-width: 350px;
+    position: relative;
+}
+.pending-list-tbl tbody tr td:last-child {
+    position: relative;
+}
+.pending-list-tbl tbody .actn-arw-rgt,
+ .pending-list-tbl tbody .icon-edited {
+    position: absolute;
+    top: 17px;
+    right: 20px;
+}

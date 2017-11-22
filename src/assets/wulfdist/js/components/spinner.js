@@ -1,0 +1,5 @@
+/*!
+ * WULF v1.2.39 (http://wulf-demo.dynamic.nsn-net.net/)
+ * Copyright © 2016-2017 Nokia. All rights Reserved.
+ */
+!function(a){"function"==typeof define&&define.amd?define(["jquery","fuelux/spinbox"],a):"object"==typeof module&&module.exports?module.exports=function(b,c){return void 0===c&&(c="undefined"!=typeof window?require("jquery"):require("jquery")(b)),a(c,require("fuelux/spinbox")),c}:a(jQuery)}(function(a){"use strict";var b=32,c=38,d=40,e=13;"function"==typeof a.fn.spinbox&&(a.fn.spinbox.Constructor.prototype.keydown=function(f){var g=f.keyCode,h=f.target,i=h.className.toLowerCase();i.indexOf("spinbox-input")>=0?g===c?this.step(!0):g===d&&this.step(!1):(i.indexOf("spinbox-up")||i.indexOf("spinbox-down")>=0)&&(g===c||g===d?a(document).off("keydown.fu.spinbox",h):(g===b||g===e)&&(a(h).trigger("mousedown"),a(h).trigger("mouseup")))})});

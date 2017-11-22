@@ -1,0 +1,292 @@
+<hdd-banner [title]="'Wi-Fi Device Database Portal'"></hdd-banner>
+<a href="javascript:void(0);" routerLink="/login" class="logoutlink">Logout</a>
+
+
+<mat-tab-group>
+        <mat-tab label="Dashboard">
+            <div class="dashboard-contnr">
+                <div class="dashboard-card">
+                    <h3 class="card-hd">Total Device count</h3>
+                    <p class="main-count">410K</p>
+                    <p class="sub-count">410 123</p>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 class="card-hd">Updated Device</h3>
+                    <p class="main-count">49%</p>
+                    <p class="sub-count">200 000</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3 class="card-hd">Pending Devices</h3>
+                    <p class="main-count">51%</p>
+                    <p class="sub-count">210 123</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3 class="card-hd">Top Manufacturer</h3>
+                    <p class="main-count">Apple</p>
+                    <p class="sub-count">210 123</p>
+                </div>
+
+                <div class="row charts-lists">
+                    <p><strong>Manufacture share by device type</strong></p>
+                    <ul class="list-unstyled list-inline chart-devices">
+                        <li class="bdark">Apple</li>
+                        <li class="blight">Samsung</li>
+                        <li class="yellow">Nokia</li>
+                        <li class="red">LG</li>
+                    </ul>
+                    <div class="col-sm-2">
+                        <div style="display: block">
+                            <canvas width="100%" height="100%" baseChart
+                                    [data]="pieChartData"
+                                    [labels]="pieChartLabels"
+                                    [chartType]="pieChartType" 
+                                    [options]="pieChartOptions" 
+                                    [colors] = "pieChartColors" 
+                                    (chartClick)="chartClicked($event)">
+                            </canvas>
+                        </div>
+                        <span class="show text-center">TV</span>
+                    </div>
+                    <div class="col-sm-2">
+                        <div style="display: block">
+                            <canvas width="100%" height="100%" baseChart
+                                    [data]="pieChartData2"
+                                    [labels]="pieChartLabels"
+                                    [chartType]="pieChartType"
+                                    [options]="pieChartOptions" 
+                                    [colors] = "pieChartColors"  
+                                    (chartClick)="chartClicked($event)">
+                            </canvas>
+                        </div>
+                        <span class="show text-center">Mobile</span>
+                    </div>
+                    <div class="col-sm-2">
+                        <div style="display: block">
+                            <canvas width="100%" height="100%" baseChart
+                                    [data]="pieChartData3"
+                                    [labels]="pieChartLabels"
+                                    [chartType]="pieChartType"
+                                    [options]="pieChartOptions" 
+                                    [colors] = "pieChartColors"  
+                                    (chartClick)="chartClicked($event)">
+                            </canvas>
+                        </div>
+                        <span class="show text-center">Laptops</span>
+                    </div>
+                    <div class="col-sm-2">
+                        <div style="display: block">
+                            <canvas width="100%" height="100%" baseChart
+                                    [data]="pieChartData4"
+                                    [labels]="pieChartLabels"
+                                    [chartType]="pieChartType"
+                                    [options]="pieChartOptions" 
+                                    [colors] = "pieChartColors"  
+                                    (chartClick)="chartClicked($event)">
+                            </canvas>
+                        </div>
+                        <span class="show text-center">Printers</span>
+                    </div>
+                    <div class="col-sm-2">
+                        <div style="display: block">
+                            <canvas width="100%" height="100%" baseChart
+                                    [data]="pieChartData5"
+                                    [labels]="pieChartLabels"
+                                    [chartType]="pieChartType"
+                                    [options]="pieChartOptions" 
+                                    [colors] = "pieChartColors"  
+                                    (chartClick)="chartClicked($event)">
+                            </canvas>
+                        </div>
+                        <span class="show text-center">Others</span>
+                    </div>
+                </div>
+                <div class="device-barchart">
+                    <p><strong>Manufacture device counts</strong></p>
+                    <div style="display: block">
+                    <canvas baseChart
+                            [datasets]="barChartData"
+                            [labels]="barChartLabels"
+                            [options]="barChartOptions"
+                            [legend]="barChartLegend"
+                            [chartType]="barChartType"
+                            (chartHover)="chartHovered($event)"
+                            [colors] = "barChartColors"  
+                            (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                    <span class="show text-center">Device counts</span>
+                    <p class="barmanfac-txt">Manufacturers</p>
+                </div>
+            </div>
+
+            
+        </mat-tab>
+        <mat-tab label="Pending List">
+                <p class="text-right reload-icon nomar"><a href="javascript:void(0);"><img src="assets/img/ic_refresh_black_24dp_2x.png"></a></p>
+                <div class="search-filter">
+                    <span class="icon icon-search"></span>
+                    <input class="form-control" placeholder="Filter using Model,Manufacturer,etc." aria-describedby="basic-addon1" type="text">
+                </div>
+        
+                    <div class="table-container pending-list-tbl">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-uppercase">
+                                <tr>
+                                    <th>Device ID</th>
+                                    <th>Device Type</th>
+                                    <th>Model Name</th>
+                                    <th>Model Number</th>
+                                    <th>Manufacturer</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-toggle="modal"  data-target="#deviceView">
+                                    <td>126578282</td>
+                                    <td>Mobile</td>
+                                    <td>Galaxy 7</td>
+                                    <td>GN-123</td>
+                                    <td>Samsung</td>
+                                    <td>Update <span class="icon icon-edited"></span></td>
+                                </tr>
+                                <tr data-toggle="modal" data-target="#deviceApprove">
+                                    <td>126578282</td>
+                                    <td>Mobile</td>
+                                    <td>Galaxy 7</td>
+                                    <td>GN-123</td>
+                                    <td>Samsung</td>
+                                    <td>Approve <span class="actn-arw-rgt"></span></td>
+                                </tr>
+                                <tr data-toggle="modal" data-target="#deviceView">
+                                    <td>126578282</td>
+                                    <td>Mobile</td>
+                                    <td>Galaxy 7</td>
+                                    <td>GN-123</td>
+                                    <td>Samsung</td>
+                                    <td>Update <span class="icon icon-edited"></span></td>
+                                </tr>
+                                <tr data-toggle="modal" data-target="#deviceApprove">
+                                    <td>126578282</td>
+                                    <td>Mobile</td>
+                                    <td>Galaxy 7</td>
+                                    <td>GN-123</td>
+                                    <td>Samsung</td>
+                                    <td>Approve <span class="actn-arw-rgt"></span></td>
+                                </tr>
+                                                                                            
+                            </tbody>
+                        </table>
+                        <p class="text-right table-ftr-btns nomar">
+                            <button class="btn btn-primary" mat-button>Prev</button>
+                            <span class="text-primary">1000/2000</span>
+                            <button class="btn btn-primary" mat-button>Next</button>
+                        </p>
+                    </div>
+                </div>            
+
+        </mat-tab>
+        <mat-tab label="Device List">
+            
+                <p class="text-right reload-icon nomar"><a href="javascript:void(0);"><img src="assets/img/ic_refresh_black_24dp_2x.png"></a></p>
+                <div class="search-filter">
+                    <span class="icon icon-search"></span>
+                    <input class="form-control" placeholder="Filter using Model,Manufacturer,etc." aria-describedby="basic-addon1" type="text">
+                </div>
+        
+                    <div class="table-container">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-uppercase">
+                                <tr>
+                                    <th>Device ID</th>
+                                    <th>Device Type</th>
+                                    <th>Model Name</th>
+                                    <th>Model Number</th>
+                                    <th>Manufacturer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-toggle="modal" data-target="#deviceView">
+                                    <td>126578282</td>
+                                    <td>Mobile</td>
+                                    <td>Galaxy 7</td>
+                                    <td>GN-123</td>
+                                    <td>Samsung</td>
+                                </tr>
+                                <tr data-toggle="modal" data-target="#deviceView">
+                                    <td>126578282</td>
+                                    <td>Mobile</td>
+                                    <td>Galaxy 7</td>
+                                    <td>GN-123</td>
+                                    <td>Samsung</td>
+                                </tr>
+                                <tr data-toggle="modal" data-target="#deviceView">
+                                    <td>126578282</td>
+                                    <td>Mobile</td>
+                                    <td>Galaxy 7</td>
+                                    <td>GN-123</td>
+                                    <td>Samsung</td>
+                                </tr>
+                                <tr data-toggle="modal" data-target="#deviceView">
+                                    <td>126578282</td>
+                                    <td>Mobile</td>
+                                    <td>Galaxy 7</td>
+                                    <td>GN-123</td>
+                                    <td>Samsung</td>
+                                </tr>
+                                                                                            
+                            </tbody>
+                        </table>
+                        <p class="text-right table-ftr-btns nomar">
+                            <button class="btn btn-primary" mat-button>Prev</button>
+                            <span class="text-primary">1000/2000</span>
+                            <button class="btn btn-primary" mat-button>Next</button>
+                        </p>
+                    </div>
+                </div>
+
+        <!-- <button class="btn btn-icon" title="Delete" data-toggle="modal" data-target="#myModal">Launch</button> -->
+
+
+        </mat-tab>
+    </mat-tab-group>
+
+  
+    <div class="modal fade" tabindex="-1" role="dialog" id="deviceView">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Device Information</h4>
+                </div>
+                <div class="modal-body">
+                    <device-view></device-view>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn main-primary" data-dismiss="modal" mat-button>Send Back for edit</button>
+                  <button type="button" class="btn main-primary" data-dismiss="modal" mat-button>Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="modal fade" tabindex="-1" role="dialog" id="deviceApprove">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Device Information Approve List</h4>
+                    </div>
+                    <div class="modal-body">
+                        <device-approve></device-approve>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn main-primary" data-dismiss="modal" mat-button>Cancel</button>
+                      <button class="btn main-primary btn-reject" mat-button>Reject</button>
+                      <button class="btn main-primary btn-approve" mat-button>Approve</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+    

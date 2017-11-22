@@ -1,0 +1,6 @@
+{
+  "month" : ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"],
+  "week" : ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
+  "now":"Now",
+  "done":"Done"
+}
