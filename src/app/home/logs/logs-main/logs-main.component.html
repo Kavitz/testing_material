@@ -1,0 +1,45 @@
+<div *ngIf='!simbuilderlog else log'>
+    <v1830-logstablestructure [columns]=columns [elements]=elements [pagetitle]=pagetitle (deleteFromlog)='onDelete($event)'
+        (viewClickFromlog)='onView($event)' (deletemultipleFromlog)='onDeleteMutiple($event)' (togglerefresh)='toggelautorefreshTable($event)'>
+    </v1830-logstablestructure>
+</div>
+
+<ng-template #log>
+    <div class="row">
+        <div [ngClass]="'col-sm-10'">
+            <span [ngClass]="'pagetitletext'">{{pagetitle}}</span>
+        </div>
+        <div [ngClass]="'col-sm-1'">
+            <button mat-icon-button [ngClass]="'add_icon_btn_title'" id="refresh" (click)="onRefreshClick()">
+                <mat-icon [ngClass]="'add_icon_title'" aria-label="Refresh">autorenew</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onDelete(row)" [disabled]="simbuliderdelete" id="delete">
+                <mat-icon [ngClass]="'add_icon_title'" aria-label="Refresh">delete</mat-icon>
+            </button>
+        </div>
+        <div [ngClass]="'col-sm-1'"></div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="table_container mat-elevation-z8">
+                <mat-table [dataSource]="elements">
+                    <ng-container matColumnDef="filename">
+                        <mat-header-cell *matHeaderCellDef class="customtableheader"> Filename </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.filename}} </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                    <mat-row matTooltip={{row.filename}} matTooltipClass="'tooltip'" *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.filename}"
+                        (click)="selectRow(row)">
+                    </mat-row>
+                </mat-table>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <mat-form-field style="width: calc(100% - 10px);">
+                <textarea id="msg" matInput [ngClass]="'textarea_border'" rows="23" cols="90" readonly [value]="simbuilderlogmsg">
+            </textarea>
+            </mat-form-field>
+        </div>
+    </div>
+</ng-template>

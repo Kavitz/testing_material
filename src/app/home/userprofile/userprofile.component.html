@@ -1,0 +1,37 @@
+<v1830-pagetitle [pagetitle]=pagetitle [refreshbtn]=refreshbtn [addbtn]=addbtn [searchbtn]=searchbtn
+    (RefreshClickFromPageHeader)="refreshClick()" (AddClickFromPageHeader)="onAddClick()"></v1830-pagetitle>
+<mat-card class="alignment">
+    <div class="row">
+        <div class="col-sm-6 attrlabel">
+            <i class="fas fa-user"></i>
+            <label class="control-label">User Name:</label>
+        </div>
+        <div class="col-sm-6">
+            {{username}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label class="control-label">Email ID:</label>
+        </div>
+        <div class="col-sm-6">
+            -
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label class="control-label">User Role:</label>
+        </div>
+        <div class="col-sm-6">
+            {{userrole}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label class="control-label">Group Name:</label>
+        </div>
+        <div class="col-sm-6">
+            {{usergroup}}
+        </div>
+    </div>
+</mat-card>

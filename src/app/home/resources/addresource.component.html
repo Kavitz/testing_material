@@ -1,0 +1,806 @@
+<div [ngStyle]="{'display':'flex'}">
+	<span [ngStyle]="{'width': 'calc(100% - 40px)'}">Add Resource</span>
+	<button id="closedialog" mat-icon-button (click)="this.dialogRef.close()" [ngStyle]="{'top': '-9px'}">
+		<i class="material-icons">
+			close
+		</i>
+	</button>
+</div>
+<mat-horizontal-stepper [linear]="isLinear" (selectionChange)="selectionChange($event)" #stepper>
+	<mat-step [stepControl]="resourceform">
+		<form [formGroup]="resourceform">
+			<ng-template matStepLabel>Resources</ng-template>
+			<mat-card [ngClass]="'step1'">
+				<mat-card-content>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<input id="name" matInput placeholder="Name" formControlName="name" required>
+								<mat-hint *ngIf="!(resourceform.get('vcenter').dirty)">Can contain alphanumeric,
+									dot(.),hyphen(-),underscore(_)
+								</mat-hint>
+								<mat-error *ngIf="(resourceform.get('name').touched || (resourceform.get('name').dirty ) && (resourceform.get('name').errors ))">
+									<span *ngIf="resourceform.get('name').errors?.required">
+										Required
+									</span>
+									<span *ngIf="(resourceform.get('name').errors?.pattern)">
+										Please enter valid name
+									</span>
+								</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Name of the Resource Configuration.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<input id="mqttserver" matInput placeholder="MQTT Server" formControlName="mqttserver" required>
+								<mat-error *ngIf="(resourceform.get('mqttserver').touched || (resourceform.get('mqttserver').dirty ) && (resourceform.get('mqttserver').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="IP or hostname of proper mqtt server (e.g.: IP of master server in the primary network).">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="ovf" placeholder="OVF" formControlName="ovf"  required>
+									<mat-option *ngFor="let ovf of ovfs$ | async as ovft" [value]="ovf">
+									<span id={{ovf.name}}>{{ovf.name}}</span>	
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="(resourceform.get('ovf').touched || (resourceform.get('ovf').dirty ) && (resourceform.get('ovf').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default OVF template which will be used to create the virtual machine.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="vcenter" placeholder="vCenter" formControlName="vcenter" required>
+									<mat-option *ngFor="let vc of vcenters$ | async as vcenter" [value]="vc">
+										<span id={{vc.name}}>{{vc.name}}</span>
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="(resourceform.get('vcenter').touched || (resourceform.get('vcenter').dirty ) && (resourceform.get('vcenter').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Entry point with authentification for deployments on vmWare.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="datacenter" placeholder="Data Center" formControlName="datacenter" required>
+									<mat-option *ngFor="let dc of datacenters$ | async as dc" [value]="dc">
+										<span id={{dc}}>{{dc}}</span>
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="(resourceform.get('datacenter').touched || (resourceform.get('datacenter').dirty ) && (resourceform.get('datacenter').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="vmWare datacenter where the simulator will be deployed in.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="folder" placeholder="Folder" formControlName="folder">
+									<mat-option *ngFor="let fs of folders$ | async as fs" [value]="fs">
+									<span id={{fs}}>{{fs}}</span>	
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="(resourceform.get('folder').touched || (resourceform.get('folder').dirty ) && (resourceform.get('folder').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Folder in which the virtual machines will be deployed. The empty option will deploy it to the root folder.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="hostcluster" placeholder="Host/Cluster" formControlName="hostcluster" required>
+									<mat-option *ngFor="let cs of clusters$ | async as cs" [value]="cs">
+									<span id={{cs}}>{{cs}}</span>	
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="(resourceform.get('hostcluster').touched || (resourceform.get('hostcluster').dirty ) && (resourceform.get('hostcluster').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Compute resource (host or cluster) where the simulator will be running on.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="datastore" placeholder="Data Store" formControlName="datastore" required>
+									<mat-option *ngFor="let ds of datastores$ | async as ds" [value]="ds">
+										 <span id={{ds}}>{{ds}}</span>
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="(resourceform.get('datastore').touched || (resourceform.get('datastore').dirty ) && (resourceform.get('datastore').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Storage resource where the hard disks of the simulator will be stored on.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="network" placeholder="Network" formControlName="network" required>
+									<mat-option *ngFor="let ns of networks$ | async as ns" [value]="ns">
+										<span id={{ns}}>{{ns}}</span>
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="(resourceform.get('network').touched || (resourceform.get('network').dirty ) && (resourceform.get('network').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Primary network for the simulator. The initial installation and further management will be done over this network.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="networkgmre" placeholder="NetGMRE" formControlName="networkgmre" required>
+									<mat-option *ngFor="let ns of networks$ | async as ns" [value]="ns">
+										<span id={{ns}}>{{ns}}</span>
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="(resourceform.get('networkgmre').touched || (resourceform.get('networkgmre').dirty ) && (resourceform.get('networkgmre').errors ))">Required</mat-error>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface for GMRE usage. Will be bound to eth1 interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+			<div [ngClass]="'row actionrow'">
+				<div [ngClass]="'col-sm-8 errormsgblock'">
+				</div>
+				<div [ngClass]="'col-sm-4'">
+					<button id="next" mat-raised-button matStepperNext [ngStyle]="{'float':'right','margin-right': '14px'}">Next</button>
+				</div>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step [stepControl]="simulationform">
+		<form [formGroup]="simulationform">
+			<ng-template matStepLabel>Simulation</ng-template>
+			<mat-card [ngClass]="'step1'">
+				<mat-card-content>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select placeholder="Master Shelf Type" formControlName="mastershelftype" id="shelftype">
+									<mat-option *ngFor="let mode of shelftyeoptions" [value]="mode">
+										<span id={{mode}}>{{mode}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default master shelf which is configured on deployment.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select placeholder="{{shelfModeLabel}}" formControlName="shelfmode" id="shelfmode">
+									<mat-option *ngFor="let mode of shelfmode" [value]="mode.value">
+										<span id={{mode.viewValue}}>{{mode.viewValue}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default mode which is configured on deployment.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div *ngIf="!showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select placeholder="Matrix Size (PSS36)" formControlName="matrixsizepss36" id="matrixsizepss36">
+									<mat-option *ngFor="let mspss36 of matrixSizeForPSS36" [value]="mspss36.value">
+										<span id={{mspss36.viewValue}}>{{mspss36.viewValue}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default mode which is configured on deployment.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select placeholder="Boot Level" formControlName="bootlevel" id="bootlevel">
+									<mat-option *ngFor="let boot of bootlevel" [value]="boot.value">
+										<span id={{boot.viewValue}}>{{boot.viewValue}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default configuration level for the deployed simulator. Please leave always on ready until you have a good reason to change it.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select placeholder="Run Level" formControlName="runlevel" id="runlevel">
+									<mat-option *ngFor="let run of runlevel" [value]="run.value">
+										<span id={{run.viewValue}}>{{run.viewValue}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default run level for the deployed simulator. Stop will not start the NE after deployment.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div *ngIf="!showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select placeholder="Matrix Size (PSS64)" formControlName="matrixsizepss64" id="matrixsizepss64">
+									<mat-option *ngFor="let mspss64 of matrixSizeForPSS64" [value]="mspss64.value">
+										<span id={{mspss64.viewValue}}>{{mspss64.viewValue}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default mode which is configured on deployment.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-12'">
+							<mat-form-field [ngClass]="'urlfield'">
+								<input matInput placeholder="NE Load URL" formControlName="neload" id="neload">
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Place where NE load is fetched from. Can be a nfs storage (then the extracted data structure is expected) or a http/https URL (archive with .sim.tar.gz or .tar.gz is expected).">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-12'">
+							<mat-form-field [ngClass]="'urlfield'">
+								<input matInput placeholder="GMRE Load URL" formControlName="gmreload" id="gmreload">
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Place where GMRE load is fetched from. Can be a nfs storage (then the extracted data structure is expected) or a http/https URL (archive with .sim.tar.gz or .tar.gz is expected).">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-12'">
+							<mat-form-field [ngClass]="'urlfield'">
+								<input matInput placeholder="{{loadLabel}}" formControlName="oarload" id="oarload">
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Place where load is fetched from. Can be a nfs storage (then the extracted data structure is expected) or a http/https URL (archive with .sim.tar.gz or .tar.gz is expected).">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-checkbox formControlName="localinstall" [labelPosition]="before" id="localinstall">Local Install</mat-checkbox>
+							<span [ngClass]="'helpspan'" [ngStyle]="{'top': '0px'}" matTooltip="Default value for running NE/GMRE/OAR/ZIC loads locally or from nfs (only relevant when using nfs to distribute loads).">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+			<div [ngClass]="'row actionrow'">
+				<div [ngClass]="'col-sm-6'">
+				</div>
+				<div [ngClass]="'col-sm-6'">
+					<button id="next" mat-raised-button matStepperNext [ngStyle]="{'float':'right','margin-right': '14px'}">Next</button>
+					<button id="back" mat-raised-button matStepperPrevious [ngStyle]="{'float':'right','margin-right': '14px'}">Back</button>
+				</div>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step [stepControl]="networkform">
+		<form [formGroup]="networkform">
+			<ng-template matStepLabel>Networks</ng-template>
+			<mat-card [ngClass]="'step1'">
+				<mat-card-content>
+					<div [ngClass]="'row'">
+						<div *ngIf="showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="netoamp" placeholder="NetOAMP" formControlName="netoamp">
+									<mat-option *ngFor="let noamp of networks$ | async as noamp" [value]="noamp">
+										<span id={{noamp}}>{{noamp}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to oamp interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div *ngIf="showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="nete1" placeholder="NetE1" formControlName="nete1">
+									<mat-option *ngFor="let ne1 of networks$ | async as ne1" [value]="ne1">
+										<span id={{ne1}}>{{ne1}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to e1 interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div *ngIf="showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="nete2" placeholder="NetE2" formControlName="nete2">
+									<mat-option *ngFor="let ne2 of networks$ | async as ne2" [value]="ne2">
+										<span id={{ne2}}>{{ne2}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to e2 interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div *ngIf="showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="netvoip" placeholder="NetVOIP" formControlName="netvoip">
+									<mat-option *ngFor="let nvoip of networks$ | async as nvoip" [value]="nvoip">
+										<span id={{nvoip}}>{{nvoip}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to voip interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="netilan" placeholder="NetILAN" formControlName="netilan">
+									<mat-option *ngFor="let nilan of networks$ | async as nilan" [value]="nilan">
+										<span id={{nilan}}>{{nilan}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to ilan interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div *ngIf="!showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="nete2" placeholder="NetE3" formControlName="nete2">
+									<mat-option *ngFor="let ne3 of networks$ | async as ne3" [value]="ne3">
+										<span id={{ne3}}>{{ne3}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to E3 interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div *ngIf="showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="netcit" placeholder="NetCIT" formControlName="netcit">
+									<mat-option *ngFor="let ncit of networks$ | async as ncit" [value]="ncit">
+										<span id={{ncit}}>{{ncit}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to cit interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+					<div *ngIf="showportwdm" [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="netauxa" placeholder="NetAUXA" formControlName="netauxa">
+									<mat-option *ngFor="let nauxa of networks$ | async as nauxa" [value]="nauxa">
+										<span id={{nauxa}}>{{nauxa}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to aux_a interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div *ngIf="showportwdm" [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="netauxs" placeholder="NetAUXS" formControlName="netauxs">
+									<mat-option *ngFor="let nauxs of networks$ | async as nauxs" [value]="nauxs">
+										<span id={{nauxs}}>{{nauxs}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Special network interface. Will be bound to aux_s interface in the simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+			<div [ngClass]="'row actionrow'">
+				<div [ngClass]="'col-sm-6'">
+				</div>
+				<div [ngClass]="'col-sm-6'">
+					<button id="next" mat-raised-button matStepperNext [ngStyle]="{'float':'right','margin-right': '14px'}">Next</button>
+					<button id="back" mat-raised-button matStepperPrevious [ngStyle]="{'float':'right','margin-right': '14px'}">Back</button>
+				</div>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step [stepControl]="deploymentform">
+		<form [formGroup]="deploymentform">
+			<ng-template matStepLabel>Deployments</ng-template>
+			<mat-card [ngClass]="'step1'">
+				<mat-card-content>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<mat-select id="diskmode" placeholder="Disk Mode" formControlName="diskmode">
+									<mat-option *ngFor="let disk of diskmodeopt" [value]="disk.value">
+										<span id={{disk.viewValue}}>{{disk.viewValue}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default value for how the simulator is provisioned in vmWare. Can be set to thin to overprovision the datastore.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<input id="numberofcores" matInput type="number" min="1" max="7" placeholder="Number of Cores" formControlName="numberofcores">
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default value for how many CPU cores will be assigned to each deployed simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+							<mat-error *ngIf="(deploymentform.get('numberofcores').touched || (deploymentform.get('numberofcores').dirty ) && (deploymentform.get('numberofcores').errors ))">
+								<span *ngIf="deploymentform.get('numberofcores').errors?.required">
+									Cores must be 1 - 7
+								</span>
+								<span *ngIf="(deploymentform.get('numberofcores').errors?.pattern)">
+									Cores must be 1 - 7
+								</span>
+							</mat-error>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngStyle]="{'width':'95px'}">
+								<input id="ramsize" matInput type="number" min="1" max="1011" placeholder="RAM Size" formControlName="ramsize">
+							</mat-form-field>&nbsp;&nbsp;
+							<mat-form-field [ngStyle]="{'width':'95px'}">
+								<mat-select id="ramunit" placeholder="RAM Unit" formControlName="ramunit">
+									<mat-option *ngFor="let unit of ramunit" [value]="unit.value">
+										<span id={{unit.viewValue}}>{{unit.viewValue}}</span>
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Default value for how many RAM will be assigned to each deployed simulator.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+							<mat-error *ngIf="showmemvalidation">Size must be 4MB to 1011GB</mat-error>
+						</div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+			<div [ngClass]="'row actionrow'">
+				<div [ngClass]="'col-sm-6'">
+				</div>
+				<div [ngClass]="'col-sm-6'">
+					<button id="next" mat-raised-button matStepperNext [ngStyle]="{'float':'right','margin-right': '14px'}">Next</button>
+					<button id="back" mat-raised-button matStepperPrevious [ngStyle]="{'float':'right','margin-right': '14px'}">Back</button>
+				</div>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step [stepControl]="simbuilderform">
+		<form [formGroup]="simbuilderform">
+			<ng-template matStepLabel>Simbuilder</ng-template>
+			<mat-card [ngClass]="'step1'">
+				<mat-card-content>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<input id="webserverurl" matInput placeholder="Webserver URL" formControlName="webserverurl">
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="HTTP or HTTPS URL for downloading fibersim configuration files. When running SimBuilder on the same server as the deployment no change should be needed.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<mat-form-field [ngClass]="'addResourcefieldswidth'">
+								<input id="webserverdirectory" matInput placeholder="Webserver Directory" formControlName="webserverdirectory">
+							</mat-form-field>
+							<span [ngClass]="'helpspan'" matTooltip="Directory which is used for serving files via http/https. When running SimBuilder on the same server as the deployment no no change should be needed.">
+								<i class="material-icons helpicon">
+									info
+								</i>
+							</span>
+						</div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+			<div [ngClass]="'row actionrow'">
+				<div [ngClass]="'col-sm-6'">
+				</div>
+				<div [ngClass]="'col-sm-6'">
+					<button id="next" mat-raised-button matStepperNext [ngStyle]="{'float':'right','margin-right': '14px'}">Next</button>
+					<button id="back" mat-raised-button matStepperPrevious [ngStyle]="{'float':'right','margin-right': '14px'}">Back</button>
+				</div>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>Review And Submit</ng-template>
+		<mat-card [ngClass]="'step1'">
+			<mat-card-content>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-12'">
+						<label class="reviewheading">Resources </label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Name: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('name').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">MQTT Server: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('mqttserver').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">vCenter: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('vcenter').value).name}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">OVF: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('ovf').value).name}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Data Center: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('datacenter').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Folder: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('folder').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Host/Cluster: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('hostcluster').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Data Store: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('datastore').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Network: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('network').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">NetGMRE: &nbsp; </label>
+						<label class="reviewvalue">{{(resourceform.get('networkgmre').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-12'">
+						<label class="reviewheading">Simulation Defaults </label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Master Shelf Type: &nbsp; </label>
+						<label class="reviewvalue">{{(simulationform.get('mastershelftype').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">{{shelfModeLabel}}: &nbsp; </label>
+						<label class="reviewvalue">{{(simulationform.get('shelfmode').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Local Install: &nbsp; </label>
+						<label class="reviewvalue">{{(simulationform.get('localinstall').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Boot Level: &nbsp; </label>
+						<label class="reviewvalue">{{(simulationform.get('bootlevel').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Run Level: &nbsp; </label>
+						<label class="reviewvalue">{{(simulationform.get('runlevel').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-12'">
+						<label class="reviewlabel">NE Load URL: &nbsp; </label>
+						<label class="reviewvalue">{{(simulationform.get('neload').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-12'">
+						<label class="reviewlabel">GMRE Load URL: &nbsp; </label>
+						<label class="reviewvalue">{{(simulationform.get('gmreload').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-12'">
+						<label class="reviewlabel">{{loadLabel}}: &nbsp; </label>
+						<label class="reviewvalue">{{(simulationform.get('oarload').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-12'">
+						<label class="reviewheading">Network Defaults </label>
+					</div>
+				</div>
+				<div *ngIf="showportwdm">
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetOAMP: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('netoamp').value)}}</label>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetE1: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('nete1').value)}}</label>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetE2: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('nete2').value)}}</label>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetVOIP: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('netvoip').value)}}</label>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetILAN: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('netilan').value)}}</label>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetCIT: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('netcit').value)}}</label>
+						</div>
+					</div>
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetAUXA: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('netauxa').value)}}</label>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetAUXs: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('netauxs').value)}}</label>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="!showportwdm">
+					<div [ngClass]="'row'">
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetE3: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('nete3').value)}}</label>
+						</div>
+						<div [ngClass]="'col-sm-4'">
+							<label class="reviewlabel">NetILAN: &nbsp; </label>
+							<label class="reviewvalue">{{(networkform.get('netilan').value)}}</label>
+						</div>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-12'">
+						<label class="reviewheading">Deployment Defaults </label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Disk Mode: &nbsp; </label>
+						<label class="reviewvalue">{{(deploymentform.get('diskmode').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">RAM Size: &nbsp; </label>
+						<label class="reviewvalue">{{(deploymentform.get('ramsize').value)}}&nbsp;{{(deploymentform.get('ramunit').value)
+							|
+							uppercase}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Number of Cores: &nbsp; </label>
+						<label class="reviewvalue">{{(deploymentform.get('numberofcores').value)}}</label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-12'">
+						<label class="reviewheading">SimBuilder Defaults </label>
+					</div>
+				</div>
+				<div [ngClass]="'row'">
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Webserver URL: &nbsp; </label>
+						<label class="reviewvalue">{{(simbuilderform.get('webserverurl').value)}}</label>
+					</div>
+					<div [ngClass]="'col-sm-4'">
+						<label class="reviewlabel">Webserver Directory: &nbsp; </label>
+						<label class="reviewvalue">{{(simbuilderform.get('webserverdirectory').value)}}</label>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+		<div [ngClass]="'row actionrow'">
+			<div [ngClass]="'col-sm-8'">
+				<mat-error *ngIf="errormessage != ''">
+					{{errormessage}}
+				</mat-error>
+			</div>
+			<div [ngClass]="'col-sm-4'">
+				<button id="submit" mat-raised-button matStepperNext [ngStyle]="{'float':'right','margin-right': '14px'}" (click)="addResourceConfig()">Submit</button>
+				<button id="back" mat-raised-button [ngStyle]="{'float':'right','margin-right': '14px'}" matStepperPrevious>Back</button>
+			</div>
+		</div>
+	</mat-step>
+</mat-horizontal-stepper>

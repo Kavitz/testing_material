@@ -1,0 +1,66 @@
+<div style="width: 450px;">
+    <form [formGroup]="upgradevmform">
+        <mat-card>
+            <mat-card-header>
+                VM Upgrade
+            </mat-card-header>
+            <mat-card-content>
+                <div [ngClass]="'row'">
+                    <div [ngClass]="'col-sm-6'">
+                        <mat-form-field>
+                            <input id="neloadurl" matInput placeholder="NE Load URL" formControlName="neloadurl">
+                        </mat-form-field>
+                    </div>
+                    <div [ngClass]="'col-sm-6'">
+                        <mat-form-field>
+                            <input id="neload" matInput placeholder="NE Load" formControlName="neload">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div [ngClass]="'row'">
+                    <div [ngClass]="'col-sm-6'">
+                        <mat-form-field>
+                            <input id="gmreloadurl" matInput placeholder="GMRE Load URL" formControlName="gmreloadurl">
+                        </mat-form-field>
+                    </div>
+                    <div [ngClass]="'col-sm-6'">
+                        <mat-form-field>
+                            <input id="gmreload" matInput placeholder="GMRE Load" formControlName="gmreload">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div [ngClass]="'row'">
+                    <div [ngClass]="'col-sm-6'">
+                        <mat-form-field>
+                            <input id="oarloadurl" matInput placeholder="OAR Load URL" formControlName="oarloadurl">
+                        </mat-form-field>
+                    </div>
+                    <div [ngClass]="'col-sm-6'">
+                        <mat-form-field>
+                            <input id="oarload" matInput placeholder="OAR Load" formControlName="oarload">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div [ngClass]="'row'">
+                    <div [ngClass]="'col-sm-6'">
+                        <mat-form-field>
+                            <mat-select placeholder="Run Level" id="runlevels" formControlName="runlevel">
+                                <mat-option *ngFor="let level of runlevels" [value]="level.value">
+                                    <span id={{level.viewValue}}>{{level.viewValue}}</span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions [ngClass]="'matcustioncardaction'">
+                <div class="row">
+                    <div [ngClass]="'col-sm-12'">
+                        <button id="upgrade" type="button" [ngStyle]="{'float':'right'}" class="mat-raised-button" (click)="onupgradeClick()">Upgrade</button>
+                        <button id="cancel" type="button" [ngStyle]="{'float':'right'}" class="mat-raised-button" (click)="onCancelClick()">Cancel</button>
+                    </div>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+</div>

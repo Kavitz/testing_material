@@ -1,0 +1,48 @@
+<v1830-pagetitle [pagetitle]=pagetitle [refreshbtn]="false" [addbtn]="false" [searchbtn]="true" [upgrade]="true" (ResourceChangeFromPageHeader)='resourceChange($event)'
+    [resourceconfigs]="resourceconfigs" (UpgradeClickFromPageHeader)="onUpgradeClick()"></v1830-pagetitle>
+<div [ngClass]="'configurationdiv'">
+    <div [ngClass]="'table-container mat-elevation-z8'">
+        <table mat-table [ngClass]="'customtable'" [dataSource]="dataSource" matSort matSortActive="vmname" matSortDirection="asc">
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef [ngClass]="'customtableheader'" [ngStyle]="{'width':'1%', 'padding-top':'10px'}" style='vertical-align: baseline'>
+                    <ng-container>
+                        <mat-checkbox (change)="$event ? masterToggle() : null " [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            [ngClass]="'tablecheckbox'">
+                        </mat-checkbox>
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let row" [ngClass]="'customtablecell'" [ngStyle]="{'padding-top':'10px'}">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                        [ngClass]="'tablecheckbox'">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+            <ng-container *ngFor="let column of columns" matColumnDef="{{column.columnDef}}">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="column.dispcolumn" [ngClass]="'customtableheader'" [ngStyle]="{'width':column.width}">
+                    {{column.header}}
+                    <!-- <mat-form-field class="filter" floatLabel="never" [ngStyle]="{'width':'200px'}">
+                        <mat-label>Search</mat-label>
+                        <input matInput [formControl]="nameFilter" >
+                      </mat-form-field>  -->
+                </th>
+                <td mat-cell *matCellDef="let element" [hidden]="column.dispcolumn">
+                    {{column.cell(element)}} </td>
+            </ng-container>
+            <ng-container matColumnDef="View">
+                <th mat-header-cell *matHeaderCellDef [ngClass]="'customtableheader'" [ngStyle]="{'width':'4%'}">
+                    Change State
+                </th>
+                <td mat-cell *matCellDef="let row" [ngClass]="'customtablecell'">
+                    <button mat-icon-button (click)="onViewClick(row)" class="editbutton">
+                        <i class="material-icons ">
+                            edit
+                        </i>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row [ngClass]="'customtableheader'" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row [ngClass]="'customtablerow'" *matRowDef="let row; columns: displayedColumns;" [ngClass]="{ 'highlight': selectedRowIndex == row.id,'success': row.username == 'admin'}"></tr>
+        </table>
+    </div>
+    <mat-paginator [ngClass]="'custompaginator'" [pageSize]="10" [pageSizeOptions]="[5,10,20]"></mat-paginator>
+</div>

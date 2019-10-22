@@ -1,0 +1,94 @@
+<div [ngClass]="'configurationdiv'">
+	<v1830-pagetitle [pagetitle]=pagetitle [refreshbtn]=refreshbtn [addbtn]=addbtn [searchbtn]=searchbtn
+	 (RefreshClickFromPageHeader)="refreshClick()" (AddClickFromPageHeader)="onAddClick()"></v1830-pagetitle>
+	<mat-card class="addeditblock" *ngIf="showform" [@slideInOut]>
+		<mat-card-header>
+			<mat-card-title [ngClass]="'matcustomcardtitle'">{{submitbuttonaction}} User</mat-card-title>
+		</mat-card-header>
+		<form [formGroup]="manageusersform">
+			<mat-card-content [ngClass]="'matcustomcardcontent'">
+				<div class="row">
+					<div class="col-sm-3">
+						<mat-form-field>
+							<input id="name" matInput formControlName="username" placeholder="User Name">
+							<mat-hint>Can contain alphanumeric, dot(.),hyphen(-),underscore(_)</mat-hint>
+							<mat-error *ngIf="manageusersform.get('username').pending">
+								checking for availability..
+							</mat-error>
+
+							<mat-error *ngIf="(manageusersform.get('username').touched || (manageusersform.get('username').dirty ) && (manageusersform.get('username').errors ))">
+								<span *ngIf="manageusersform.get('username').errors?.required">
+									Required
+								</span>
+								<span *ngIf="(manageusersform.get('username').errors?.pattern)">
+									Please enter valid name
+								</span>
+								<span *ngIf="(manageusersform.get('username').errors?.shouldBeEqual)">
+									Name should be unique!
+								</span>
+							</mat-error>
+
+						</mat-form-field>
+					</div>
+					<div class="col-sm-3">
+						<mat-form-field>
+							<input matInput id="password" formControlName="password" placeholder="Password" [type]="hidepassword ? 'password' : 'text'">
+							<mat-hint>Password must contain Atleast One uppercase, One lowercase, One non-alphabet either number or special
+								character with min length 8 and max length 15</mat-hint>
+							<mat-icon matSuffix (click)="hidepassword = !hidepassword">{{hidepassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+							<mat-error *ngIf="(manageusersform.get('password').touched || (manageusersform.get('password').dirty ) && (manageusersform.get('password').errors))">
+								<span *ngIf="manageusersform.get('password').errors?.required">
+									Required
+								</span>
+								<span *ngIf="(manageusersform.get('password').errors?.pattern)">
+									Please enter valid password
+								</span>
+
+							</mat-error>
+						</mat-form-field>
+					</div>
+					<div class="col-sm-3">
+						<mat-form-field>
+							{{usergroup}}
+							<mat-select id="usergroup" formControlName="usergroup" placeholder="User Group">
+								<mat-option *ngFor="let usergroup of managegroups$ | async as grp" [value]="usergroup.groupname">
+									<span id={{usergroup.groupname}}>{{usergroup.groupname}}</span>
+								</mat-option>
+
+							</mat-select>
+							<mat-error *ngIf="(manageusersform.get('usergroup').touched || (manageusersform.get('usergroup').dirty ) && (manageusersform.get('usergroup').errors))">Required</mat-error>
+						</mat-form-field>
+					</div>
+					<div class="col-sm-3">
+						<mat-form-field>
+							<mat-select id="userrole" formControlName="userrole" placeholder="User Role">
+								<mat-option *ngFor="let userrole of userroles" [value]="userrole.value">
+									<span id={{userrole.viewValue}}>{{userrole.viewValue}}</span>
+								</mat-option>
+							</mat-select>
+							<mat-error *ngIf="(manageusersform.get('userrole').touched || (manageusersform.get('userrole').dirty ) && (manageusersform.get('userrole').errors))">Required</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</mat-card-content>
+			<mat-card-actions [ngClass]="'matcustioncardaction'">
+				<div class="row" [ngStyle]="{'margin-top': '16px','margin-right':'46px'}">
+					<div class="col-sm-9 errormsgblock">
+						<mat-error [hidden]="hidevalidationerror">{{errormessage}}</mat-error>
+					</div>
+					<div class="col-sm-1">
+						<button id="close" type="button" mat-raised-button (click)="closeFormGroupDirective()">Close</button>
+					</div>
+					<div class="col-sm-1">
+						<button id="clear" type="button" mat-raised-button (click)="clearFormGroupDirective(clearbuttonaction)">{{clearbuttonaction}}</button>
+					</div>
+					<div class="col-sm-1">
+						<button id="action" type="button" mat-raised-button (click)="doAction()">{{submitbuttonaction}}</button>
+					</div>
+				</div>
+			</mat-card-actions>
+		</form>
+	</mat-card>
+	<v1830-table [columns]=columns [elements]="manageusers$ | async" (editClickFromTable)='onEditClick($event)'
+	 (deleteClickFromTable)='onDelete($event)'></v1830-table>
+</div>

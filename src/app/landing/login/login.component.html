@@ -1,0 +1,38 @@
+<section class="login-bg">
+	<div class="login-container">
+		<h4 class="login-prod-name text-primary">Virtual 1830</h4>
+		<p class="login-version">v{{version}}</p>
+		<form [formGroup]="loginform">
+			<div class="row loginrow">
+				<div class="col-md-6 formcolumn">
+					<mat-form-field>
+						<input id="username" matInput formControlName='username' placeholder="UserName" value="">
+					</mat-form-field>
+				</div>
+				<div class="col-md-6 formcolumn">
+					<mat-form-field>
+						<input id="password" matInput formControlName='password' placeholder="Password" [type]="hide ? 'password' : 'text'">
+						<mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+					</mat-form-field>
+				</div>
+			</div>
+			<div class="row errordiv" *ngIf="errortext != ''">
+				<div class="col-md-12">
+					{{errortext}}
+				</div>
+			</div>
+			<div class="row loginrow">
+				<div class="col-md-12">
+					<button id="login" class="btn-block btn primary-btn" id="applicationLoginButton" (click)="doLogin()" mat-button [disabled]='loginform.invalid'>LOG
+						IN
+					</button>
+				</div>
+			</div>
+			<div class="row loginrow">
+				<div class="col-md-12">
+					<a id="newuserclick" (click)="openBottomSheet()" [ngStyle]="{'text-decoration':'underline','color':'#007bff'}">New User? Click here</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>

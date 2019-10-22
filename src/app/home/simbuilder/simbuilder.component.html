@@ -1,0 +1,207 @@
+<div [ngClass]="'configurationdiv'">
+    <v1830-pagetitle [pagetitle]=pagetitle [refreshbtn]=refreshbtn [addbtn]=addbtn [searchbtn]=searchbtn (RefreshClickFromPageHeader)="refreshClick()"
+        (AddClickFromPageHeader)="onAddClick()"></v1830-pagetitle>
+    <mat-card class="addeditblock" *ngIf="showform" [@slideInOut]>
+        <mat-card-header>
+            <mat-card-title [ngClass]="'matcustomcardtitle'">{{submitbuttonaction}} Simlist</mat-card-title>
+        </mat-card-header>
+        <form [formGroup]="simbuilderform" #simform="ngForm">
+            <mat-card-content [ngClass]="'matcustomcardcontent'">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div *ngIf="choosenfile else filenames">
+                            <label class="simlistfile"> Upload Simlist File
+                                <input id="filename" type="file" formControlName="filename" (change)="onFileChange($event)" />
+                            </label>
+                            <label class="filenamelabel">{{filename}}</label>
+                            <span [ngClass]="'helpspan simbuilderfilehelp'" matTooltip="This required option specifies the path to the simlist.xml file containing the definition of all nodes.">
+                                <i class="material-icons ">
+                                    info
+                                </i>
+                            </span>
+                            <mat-error *ngIf="simlisterror">
+                                Please select valid simlist xml file.
+                            </mat-error>
+                        </div>
+                        <ng-template #filenames>
+                            <mat-form-field>
+                                <input id="filename" matInput formControlName="filename" placeholder="Simlist file">
+                            </mat-form-field>
+                            <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="This required option specifies the path to the simlist.xml file containing the definition of all nodes.">
+                                <i class="material-icons ">
+                                    info
+                                </i>
+                            </span>
+                        </ng-template>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="simlistfile"> Upload Mapping File
+                            <input type="file" id="f01" formControlName="mappingfile" (change)="onFileChange1($event)" />
+                        </label>
+                        <label class="filenamelabel">{{mfilename}}</label>
+                        <span [ngClass]="'helpspan'" matTooltip="This option specifies the path to the maaping file." [ngStyle]="{'left':'2px'}">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-select id="resourceconfig" placeholder="Resource Configuration" formControlName="resourceconfig" required>
+                                <mat-option *ngFor="let state of resourceconfiguration" [value]="state">{{state}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="This required option specifies the datastore server the guests will be installed.">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input id="ne_load" matInput formControlName="ne_load" placeholder="NE Load">
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="This option can be used to specify the NE load to be used, e.g. 1830PSS-10.1-0. Otherwise it has to be given, or can be overwritten, via SimBuilder.py">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input id="gmre_load" matInput formControlName="gmre_load" placeholder="GMRE Load">
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="With this option the GMRE load can be specified and GMRE will be installed, e.g. GPS62-03K, This option requires an simlist.xml file extended by GMRE related <sim-property> entries.">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input id="oar_load" matInput formControlName="oar_load" placeholder="OAR Load">
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="With this option the OAR load can be specified and OAR will be installed, e.g. GPS62-03K, This option requires an simlist.xml file extended by OAR related <sim-property> entries.">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input id="fiber_ip_address" matInput formControlName="fiber_ip_address" placeholder="Fiber IP Address">
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="With this option you can specify the IP address of the fibersim server.">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input id="fiber_port" type="number" matInput formControlName="fiber_port" placeholder="Fiber Port">
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="With this option, the Fibersim port number can be specified if it differs from the default value 51101">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input id="no_parallel_install" type="number" matInput formControlName="no_parallel_install" placeholder="Parallel Install">
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="The SimBuilder.py tool is able to perform the installation/provisioning of maximum <nbr> guest nodes in parallel.">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input id="vm_group" matInput formControlName="vm_group" placeholder="VM Group">
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="This option allows to restict the installation and provisioning to a given comma separated list of node names as defined in the simlist.xml file attribute 'name'.">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-checkbox id="install" formControlName="install" [labelPosition]="before">Installation</mat-checkbox>
+                        <span [ngClass]="'helpspan'" matTooltip="This option is required to perform the installation of the guest nodes. Guest nodes which are already installed are skipped when to given the option '-f' (force mode) in addition."
+                            [ngStyle]="{'top':'2px'}">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-checkbox id="forceinstall" formControlName="forceinstall" [labelPosition]="before">Force Installation</mat-checkbox>
+                        <span [ngClass]="'helpspan'" matTooltip="This option forces the installation of already present guest nodes. This is not an upgrade but a fresh installation."
+                            [ngStyle]="{'top':'2px'}">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-checkbox id="provision" formControlName="provision" [labelPosition]="before">Local Provisioning</mat-checkbox>
+                        <span [ngClass]="'helpspan'" matTooltip="This option is required to perform the provisioning of the shelfs and slots (for line card simulation). Provisioning is alway executed after the installation."
+                            [ngStyle]="{'top':'2px'}">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input type="number" id="delay_bet_install" matInput formControlName="delay_bet_install" placeholder="Delay between Installation">
+                        </mat-form-field>
+                        <span [ngClass]="'helpspan simbuilderhelp'" matTooltip="This option allowes to change the delay between parallel installation starts.">
+                            <i class="material-icons ">
+                                info
+                            </i>
+                        </span>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions [ngClass]="'matcustioncardaction'">
+                <div class="row" [ngStyle]="{'margin-top': '16px','margin-right':'46px'}">
+                    <div class="col-sm-9 errormsgblock">
+                        <mat-error [hidden]="!(!simform.form.valid && simform.submitted)">Please fill out necessary field!
+                        </mat-error>
+                    </div>
+                    <!-- <div class="col-sm-1">
+                        <button type="reset" mat-raised-button (click)="clearForm(true)">Close</button>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="reset" mat-raised-button (click)="clearForm(false)">Clear</button>
+                    </div> -->
+                    <div class="col-sm-1">
+                        <button type="button" id="close" mat-raised-button (click)="closeFormGroupDirective()">Close</button>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" id="clear" mat-raised-button (click)="clearFormGroupDirective(clearbuttonaction)">{{clearbuttonaction}}</button>
+                    </div>
+                    <div class="col-sm-1">
+                        <button id="submitaction" mat-raised-button (click)="addSimbuilderFields()">
+                            {{submitbuttonaction}}</button>
+                    </div>
+                </div>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+    <v1830-table [columns]=columns [elements]=elements [simbuilder]=simbuilder (editClickFromTable)='onEdit($event)' (deployClickFromTable)='onDeploy($event)'
+        (deleteClickFromTable)='onDelete($event)'></v1830-table>
+</div>

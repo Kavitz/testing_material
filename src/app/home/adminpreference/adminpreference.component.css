@@ -1,0 +1,26 @@
+.custommatcardpreference{
+	max-width: 770px;
+	left: calc(100% - 1100px);
+	top: 30px;
+}
+.errormsg{
+	text-align: right;
+    position: absolute;
+    left: 36px;
+    padding-top: 10px;
+}
+.textarea_border{
+	border: 1px;
+	border-style: solid;
+	border-color: #e3e3e3;
+}
+
+.colorbutton {
+	height: 13px;
+    width: 33px;
+    border: none;
+    pointer-events: none;
+    position: relative;
+    top: 2px;
+    left: 23px;
+}

@@ -1,0 +1,104 @@
+<v1830-pagetitle [pagetitle]=pagetitle [refreshbtn]=refreshbtn [addbtn]=addbtn [searchbtn]=searchbtn (RefreshClickFromPageHeader)="refreshClick()"
+    (AddClickFromPageHeader)="onAddClick()"></v1830-pagetitle>
+<mat-card [ngClass]="'custommatcardpreference'">
+    <form [formGroup]="adminpreferenceForm">
+        <mat-card-content>
+            <div [ngClass]="'row'">
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <mat-select placeholder="Set Default UserGroup" formControlName="usergroup" id="usergroup">
+                            <mat-option *ngFor="let group of grouplist$ | async as usergroup" [value]="group.groupname">
+                                <span id={{group.groupname}}>{{group.groupname}}</span>
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="(adminpreferenceForm.get('usergroup').touched || (adminpreferenceForm.get('usergroup').dirty ) && (adminpreferenceForm.get('usergroup').errors))">Required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <mat-select id="userrole" formControlName="userrole" placeholder="Set Default UserRole">
+                            <mat-option *ngFor="let userrole of userroles" [value]="userrole.value">
+                                <span id={{userrole.value}}>{{userrole.value}}</span>
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="(adminpreferenceForm.get('userrole').touched || (adminpreferenceForm.get('userrole').dirty ) && (adminpreferenceForm.get('userrole').errors))">Required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <mat-select id="defaultrunlevel" formControlName="defaultrunlevel" placeholder="Set Default RunLevel">
+                            <mat-option *ngFor="let runlevel of runlevels" [value]="runlevel.value">
+                                <span id={{runlevel.viewValue}}>{{runlevel.viewValue}}</span>
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="(adminpreferenceForm.get('userrole').touched || (adminpreferenceForm.get('userrole').dirty ) && (adminpreferenceForm.get('userrole').errors))">Required</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div [ngClass]="'row'">
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <input matInput id="simmasterserver" formControlName="simmasterserver" placeholder="SimMaster Server">
+                    </mat-form-field>
+                </div>
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <input matInput id="simuiserver" formControlName="simuiserver" placeholder="SimUI Server">
+                    </mat-form-field>
+                </div>
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <input matInput id="v1830" formControlName="v1830" placeholder="v1830">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div [ngClass]="'row'">
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <input matInput id="simbuilder" formControlName="simbuilder" placeholder="Simbuilder">
+                    </mat-form-field>
+                </div>
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <input matInput id="sitespecific" formControlName="sitespecific" placeholder="Site specific">
+                    </mat-form-field>
+                </div>
+
+
+            </div>
+            <div [ngClass]="'row'">
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <textarea id="message" matInput formControlName="message" placeholder="Message of the day"></textarea>
+                    </mat-form-field>
+                    <mat-error *ngIf="(adminpreferenceForm.get('message').touched && (adminpreferenceForm.get('message').dirty ) && (adminpreferenceForm.get('message').errors))">Max Length is 100</mat-error>
+                </div>
+                <div [ngClass]="'col-sm-4'">
+                    <mat-form-field>
+                        <mat-select id="color" formControlName="color" placeholder="Message Priority">
+                            <mat-option *ngFor="let color of colors" [value]="color.value">
+                                <span id={{color.viewValue}}>{{color.viewValue}}</span>
+                                <button [ngClass]="'colorbutton'" [ngStyle]="{'background-color': color.color}"></button>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    </form>
+    <mat-card-actions [ngClass]="'matcustioncardaction'">
+        <div [ngClass]="'row'">
+            <div [ngClass]="'col-sm-12'">
+                <div [ngClass]="  {'register_success' : statusmessage.indexOf('Default') != -1,'register_error':statusmessage.indexOf('success') == -1,'errormsg':true,'row':true}">
+                    {{statusmessage}}
+                </div>
+            </div>
+        </div>
+        <div [ngClass]="'row'">
+            <div [ngClass]="'col-sm-12'">
+                <button id="reset" type="button" [ngStyle]="{'float':'right'}" mat-raised-button (click)="onresetclick()">Reset</button>
+                <button id="save" type="button" [ngStyle]="{'float':'right'}" mat-raised-button (click)="onsaveclick()">Save</button>
+            </div>
+        </div>
+    </mat-card-actions>
+</mat-card>

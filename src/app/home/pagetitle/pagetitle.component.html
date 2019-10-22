@@ -1,0 +1,32 @@
+<div [ngClass]="'pagetitle row'">
+	<div [ngClass]="'col-sm-6'">
+		<span [ngClass]="'pagetitletext'">{{pagetitle}}</span>
+	</div>
+	<div [ngClass]="'col-sm-4'" *ngIf='addbtn'>
+		<button mat-icon-button [ngClass]="'add_icon_btn_title'" id="refresh" (click)="onRefreshClick()" [ngStyle]="{'left':'285px'}">
+			<mat-icon [ngClass]="'add_icon_title'" aria-label="Refresh">autorenew</mat-icon>
+		</button>
+		<button *ngIf="userrole != 'standard'" mat-icon-button [ngClass]="'add_icon_btn_title'" id="add" (click)="onAddclick()" [ngStyle]="{'left':'299px'}">
+			<mat-icon [ngClass]="'add_icon_title'" aria-label="Add">add_box</mat-icon>
+		</button>
+	</div>
+	<div [ngClass]="'col-sm-4'" *ngIf='upgrade'>
+		<button id="upgrade" mat-icon-button (click)="onUpgradeClick()" [ngClass]="'add_icon_btn_title'" [ngStyle]="{'left':'120px'}">
+			<mat-icon [ngClass]="'add_icon_title'" aria-label="Upgrade">trending_up</mat-icon>
+		</button>
+		<mat-form-field [floatLabel]="never" [ngStyle]="{'top':'-16px', 'left':'167px'}">
+			<mat-select id="resourceconfig" (selectionChange)="onResourceChange($event)" [(ngModel)]="currentrc">
+				<mat-option *ngFor="let resourceconfig of resourceconfigs" [value]="resourceconfig">
+					<span id={{resourceconfig.name}}>{{resourceconfig.name}}</span>
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<div [ngClass]="'col-sm-2'" *ngIf='searchbtn'>
+		<mat-form-field [floatLabel]="'never'" [ngClass]="'tablesearch'">
+			<input matInput placeholder="search" id="search" (keyup)="applyFilter($event.target.value)">
+			<mat-icon matSuffix>search</mat-icon>
+		</mat-form-field>
+	</div>
+</div>
+<hr>

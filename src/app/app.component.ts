@@ -1,48 +1,40 @@
-/**
- * Angular 2 decorators and services
- */
+import { Component } from '@angular/core';
 import {
-  Component,
-  OnInit,
-  ViewEncapsulation
-} from '@angular/core';
-import { AppState } from './app.service';
+  transition,
+  trigger,
+  query,
+  style,
+  animate,
+  group,
+  animateChild
+} from '@angular/animations';
 
-/**
- * App Component
- * Top Level Component
- */
 @Component({
-  selector: 'app',
-  encapsulation: ViewEncapsulation.None,
-  templateUrl: 'app.component.html'
+  selector: 'v1830-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  animations: [
+trigger('myAnimation', [
+  transition('* => *', [
+    query(
+      ':enter',
+      [style({ opacity: 0 })],
+      { optional: true }
+    ),
+    query(
+      ':leave',
+       [style({ opacity: 1 }), animate('0.3s', style({ opacity: 0 }))],
+      { optional: true }
+    ),
+    query(
+      ':enter',
+      [style({ opacity: 0 }), animate('0.3s', style({ opacity: 1 }))],
+      { optional: true }
+    )
+  ])
+])
+  ]
 })
-export class AppComponent implements OnInit {
-  public angularclassLogo = 'assets/img/angularclass-avatar.png';
-  public name = 'Angular 2 Webpack Starter';
-  public url = 'https://twitter.com/AngularClass';
-
-  constructor(
-    public appState: AppState
-  ) {}
-
-  public ngOnInit() {
-    console.log('Initial App State', this.appState.state);
-    // let source = {
-    //   rl: 'AccountUser/Information',
-    //   type: 'post',
-    //   datatype: 'json',
-    //   datafields: [{ name: 'UserId' }, { name: 'FirstName' }, { name: 'LastName'}]
-    // };
-    // let dataAdapter = new (<any> $).jqx.dataAdapter(source);
-    // console.log(dataAdapter);
-  }
+export class AppComponent {
+  title = 'app';
 }
-
-/**
- * Please review the https://github.com/AngularClass/angular2-examples/ repo for
- * more angular app examples that you may copy/paste
- * (The examples may not be updated as quickly. Please open an issue on github for us to update it)
- * For help or questions please contact us at @AngularClass on twitter
- * or our chat on Slack at https://AngularClass.com/slack-join
- */

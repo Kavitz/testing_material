@@ -1,0 +1,52 @@
+<div [ngClass]="'configurationdiv'">
+<v1830-pagetitle [pagetitle]=pagetitle [refreshbtn]=refreshbtn [addbtn]=addbtn [searchbtn]=searchbtn
+(RefreshClickFromPageHeader)="refreshClick()" (AddClickFromPageHeader)="onAddClick()"></v1830-pagetitle>
+<mat-card class="addeditblock" *ngIf="showform" [@slideInOut]>
+  <mat-card-header>
+    <mat-card-title [ngClass]="'matcustomcardtitle'">{{submitbuttonaction}} Group</mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="managegroupsform" >
+    <mat-card-content [ngClass]="'matcustomcardcontent'">
+      <div class="row">
+        <div class="col-sm-6">
+            <mat-form-field>
+                <input id="name" matInput formControlName="groupname" placeholder="Group Name">
+                <mat-hint>Can contain alphanumeric, dot(.),hyphen(-),underscore(_)</mat-hint>
+                  <mat-error *ngIf="(managegroupsform.get('groupname').touched || (managegroupsform.get('groupname').dirty ) && (managegroupsform.get('groupname').errors ))">
+                    <span *ngIf="managegroupsform.get('groupname').errors?.required">
+                      Required
+                    </span>
+                    <span *ngIf="(managegroupsform.get('groupname').errors?.pattern)">
+                      Please enter valid name
+                    </span>
+                  </mat-error>
+              </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field>
+            <input matInput id="creation" formControlName="created_By" placeholder="Created By" >
+          </mat-form-field>
+        </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions [ngClass]="'matcustioncardaction'">
+      <div class="row" [ngStyle]="{'margin-top': '16px','margin-right':'46px'}">
+        <div class="col-sm-9 errormsgblock">
+          <mat-error [hidden]="hidevalidationerror">{{errormessage}}</mat-error>
+        </div>
+        <div class="col-sm-1">
+          <button id="close" type="button" mat-raised-button (click)="closeFormGroupDirective()">Close</button>
+        </div>
+        <div class="col-sm-1">
+          <button  id="clear" type="button" mat-raised-button (click)="clearFormGroupDirective(clearbuttonaction)">{{clearbuttonaction}}</button>
+        </div>
+        <div class="col-sm-1">
+          <button id="submit" type="button" mat-raised-button (click)="doAction()">{{submitbuttonaction}}</button>
+        </div>
+      </div>
+    </mat-card-actions>
+  </form>
+</mat-card> 
+  <v1830-table [columns]=columns [elements]="managegroups$ | async" (editClickFromTable)='onEditClick($event)'
+	 (deleteClickFromTable)='onDelete($event)'></v1830-table>
+</div>

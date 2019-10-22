@@ -1,0 +1,11 @@
+.alignment{
+    width: 370px;
+    top: 97px;
+    left: 479px;
+    position: relative;
+}
+
+.control-label {
+    float: right;
+    font-weight: bold;
+}

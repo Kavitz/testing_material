@@ -1,0 +1,176 @@
+<div [ngStyle]="{'min-height':'calc(100vh - 130px)','min-width':'1045px'}">
+    <form [formGroup]="multideployform">
+        <div [ngClass]="'row'">
+            <div [ngClass]="'col-sm-4'">
+                <mat-form-field>
+                    <input type="number" id="vmname" matInput placeholder="VM Count" formControlName="vmcount">
+                </mat-form-field>
+                <mat-error *ngIf="multideployform.get('vmcount').errors && (multideployform.get('vmcount').dirty || multideployform.get('vmcount').touched)">
+                    <span *ngIf="multideployform.get('vmcount').errors.max || multideployform.get('vmcount').errors.min">
+                        Limit should be between 1 to 50
+                    </span>
+                </mat-error>
+            </div>
+            <div [ngClass]="'col-sm-4'">
+                <mat-form-field>
+                    <mat-select placeholder="VM Name Template" id="vmtemplate" formControlName="vmtemplate">
+                        <mat-option *ngFor="let option of templateoptions" [value]="option.value">
+                            <span id="{{option.viewValue}}">{{option.viewValue}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div [ngClass]="'col-sm-4'">
+                <button id="setip" mdbBtn type="button" class="mat-raised-button" (click)="showsetip = !showsetip" mdbWavesEffect>Set IP Range</button>
+            </div>
+        </div>
+        <ng-container *ngIf="showsetip">
+            <div [ngClass]="'row'">
+                <div [ngClass]="'col-sm-2'">
+                    <span [ngClass]="'set_ip_label'">
+                        Set IP Range:
+                    </span>
+                </div>
+                <div [ngClass]="'col-sm-2'">
+                    <mat-form-field [ngClass]="'ip_input_width'">
+                        <input type="number" id="ipA"  matInput placeholder="A" formControlName="ipA" (change)="onchange(true,false,false,false)">
+                    </mat-form-field>
+                    <mat-error *ngIf="multideployform.get('ipA').errors && (multideployform.get('ipA').dirty || multideployform.get('ipA').touched)">
+                        <span *ngIf="multideployform.get('ipA').errors.max || multideployform.get('ipA').errors.min">
+                            IP value is invalid!
+                        </span>
+                    </mat-error>
+                </div>
+                <div [ngClass]="'col-sm-2'">
+                    <mat-form-field [ngClass]="'ip_input_width'">
+                        <input type="number" id="ipB"  matInput placeholder="B" formControlName="ipB" (change)="onchange(false,true,false,false)">
+                    </mat-form-field>
+                    <mat-error *ngIf="multideployform.get('ipB').errors && (multideployform.get('ipB').dirty || multideployform.get('ipB').touched)">
+                        <span *ngIf="multideployform.get('ipB').errors.max || multideployform.get('ipB').errors.min">
+                            IP value is invalid!
+                        </span>
+                    </mat-error>
+                </div>
+                <div [ngClass]="'col-sm-2'">
+                    <mat-form-field [ngClass]="'ip_input_width'">
+                        <input type="number" id="ipC"  matInput placeholder="C" formControlName="ipC" (change)="onchange(false,false,true,false)">
+                    </mat-form-field>
+                    <mat-error *ngIf="multideployform.get('ipC').errors && (multideployform.get('ipC').dirty || multideployform.get('ipC').touched)">
+                        <span *ngIf="multideployform.get('ipC').errors.max || multideployform.get('ipC').errors.min">
+                            IP value is invalid!
+                        </span>
+                    </mat-error>
+                </div>
+                <div [ngClass]="'col-sm-2'">
+                    <mat-form-field [ngClass]="'ip_input_width'">
+                        <input type="number" id="ipD"  matInput placeholder="D" formControlName="ipD" (change)="onchange(false,false,false,true)">
+                    </mat-form-field>
+                    <mat-error *ngIf="multideployform.get('ipD').errors && (multideployform.get('ipD').dirty || multideployform.get('ipD').touched)">
+                        <span *ngIf="multideployform.get('ipD').errors.max || multideployform.get('ipD').errors.min">
+                            IP value is invalid!
+                        </span>
+                    </mat-error>
+                </div>
+            </div>
+            <div [ngClass]="'row'">
+                <div [ngClass]="'col-sm-2'">
+                    <span [ngClass]="'set_ip_label'">
+                        Step By:
+                    </span>
+                </div>
+                <div [ngClass]="'col-sm-2'">
+                    <mat-form-field [ngClass]="'ip_input_width'">
+                        <input type="number" id="stepbyA"  matInput placeholder="A" formControlName="stepbyA" (change)="changeByStep()">
+                    </mat-form-field>
+                    <mat-error *ngIf="multideployform.get('stepbyA').errors && (multideployform.get('stepbyA').dirty || multideployform.get('stepbyA').touched)">
+                        <span *ngIf="multideployform.get('stepbyA').errors.max">
+                            IP value is invalid!
+                        </span>
+                    </mat-error>
+                </div>
+                <div [ngClass]="'col-sm-2'">
+                    <mat-form-field [ngClass]="'ip_input_width'">
+                        <input type="number" id="stepbyB"  matInput placeholder="B" formControlName="stepbyB" (change)="changeByStep()">
+                    </mat-form-field>
+                    <mat-error *ngIf="multideployform.get('stepbyB').errors && (multideployform.get('stepbyB').dirty || multideployform.get('stepbyB').touched)">
+                        <span *ngIf="multideployform.get('stepbyB').errors.max">
+                            IP value is invalid!
+                        </span>
+                    </mat-error>
+                </div>
+                <div [ngClass]="'col-sm-2'">
+                    <mat-form-field [ngClass]="'ip_input_width'">
+                        <input type="number" id="stepbyC"  matInput placeholder="C" formControlName="stepbyC" (change)="changeByStep()">
+                    </mat-form-field>
+                    <mat-error *ngIf="multideployform.get('stepbyC').errors && (multideployform.get('stepbyC').dirty || multideployform.get('stepbyC').touched)">
+                        <span *ngIf="multideployform.get('stepbyC').errors.max">
+                            IP value is invalid!
+                        </span>
+                    </mat-error>
+                </div>
+                <div [ngClass]="'col-sm-2'">
+                    <mat-form-field [ngClass]="'ip_input_width'">
+                        <input type="number" id="stepbyD"  matInput placeholder="D" formControlName="stepbyD" (change)="changeByStep()">
+                    </mat-form-field>
+                    <mat-error *ngIf="multideployform.get('stepbyD').errors && (multideployform.get('stepbyD').dirty || multideployform.get('stepbyD').touched)">
+                        <span *ngIf="multideployform.get('stepbyD').errors.max">
+                            IP value is invalid!
+                        </span>
+                    </mat-error>
+                </div>
+            </div>
+        </ng-container>
+    </form>
+    <div [ngClass]="'row'">
+        <mat-table #table [dataSource]="dataSource" [ngClass]="'multi_vm_table'">
+            <ng-container matColumnDef="vmname">
+                <mat-header-cell *matHeaderCellDef> VM Name </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field [floatLabel]="never">
+                        <input id="vm" matInput [(ngModel)]="element.vmname" [value]="element.vmname">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="ethoip">
+                <mat-header-cell *matHeaderCellDef> eth0 IP </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field [floatLabel]="never">
+                        <input id="ip" matInput [(ngModel)]="element.ethoip" [value]="element.ethoip">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nebuild">
+                <mat-header-cell *matHeaderCellDef> NE Build </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field [floatLabel]="never">
+                        <input id="ne" matInput [(ngModel)]="element.nebuild" [value]="element.nebuild">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="notetid">
+                <mat-header-cell *matHeaderCellDef> Node TID </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field [floatLabel]="never">
+                        <input id="noteid" matInput [(ngModel)]="element.notetid" [value]="element.notetid">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns" [ngStyle]="{'height': '25px'}"></mat-header-row>
+            <mat-row [ngStyle]="{'height': '33px'}" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+    <div [ngClass]="'row actionblock'">
+        <div class="col-sm-8 errormsgblock">
+            <mat-error *ngIf="duplicateerror"> Please remove the duplicates </mat-error>
+        </div>
+        <div class="col-sm-1">
+            <button id="close" type="button" class="mat-raised-button" (click)="this.dialogRef.close('normal')">Close</button>
+        </div>
+        <div class="col-sm-1">
+            <button id="refresh" type="button" class="mat-raised-button" (click)="onRefresh()">Refresh</button>
+        </div>
+        <div class="col-sm-1">
+            <button id="deploy" type="button" class="mat-raised-button" (click)="onmultideployclick()">Deploy</button>
+        </div>
+    </div>
+</div>
